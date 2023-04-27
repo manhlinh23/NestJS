@@ -4,9 +4,7 @@ import { AuthDTO } from './dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {
-    authService.doSomething();
-  }
+  constructor(private authService: AuthService) {}
 
   @Post('register')
   //   register(@Req() request: Request) {
