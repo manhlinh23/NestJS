@@ -1,13 +1,18 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Req, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { MyJwt } from 'src/auth/guard';
 
 @Controller('users')
 export class UserController {
-  @UseGuards(AuthGuard('jwt'))
+  // variable inside AuthGuard is the same with strategy
+  // if have jwt -> next step
+  //   @UseGuards(AuthGuard('jwt'))
+  // using guard custom
+  @UseGuards(MyJwt)
   @Get('me')
-  me() {
+  me(@Req() request: any) {
     try {
-      return 'My detail info';
+      return request.user;
     } catch (error) {
       console.log('error', error);
     }

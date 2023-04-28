@@ -18,7 +18,7 @@ export class AuthService {
     const hashedPassword = await argon.hash(data.password);
     try {
       // save data to db
-      const user = await this.prismaService.user.create({
+      await this.prismaService.user.create({
         //data save to db
         data: {
           email: data.email,
