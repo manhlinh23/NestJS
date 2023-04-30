@@ -14,11 +14,19 @@ export class AuthService {
   ) {}
 
   async register(data: AuthDTO) {
+    //check duplicate email
+    const existsUserEmail = await this.prismaService.user.findUnique({
+      where: { email: data.email },
+    });
+    console.log('existsUserEmail', existsUserEmail);
+    if (existsUserEmail) {
+      return { msg: 'Duplicate email' };
+    }
     //hashed password
     const hashedPassword = await argon.hash(data.password);
     try {
       // save data to db
-      await this.prismaService.user.create({
+      const user = await this.prismaService.user.create({
         //data save to db
         data: {
           email: data.email,
@@ -35,6 +43,7 @@ export class AuthService {
         },
       });
       return {
+        user,
         message: 'Register success',
       };
     } catch (error) {
